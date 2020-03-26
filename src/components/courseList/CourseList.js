@@ -4,10 +4,17 @@ import {variables} from "../global/variables"
 
 export const CourseListContainer  = styled.ul`
     width: 100%;
+    @media (orientation: landscape) {
+        width: 50%;
+    }
     /* background-color: ${variables.colorRed}; */
     border-radius: 3rem 3rem 2rem 2rem;
     height: auto;
     overflow: hidden;
+    & > li:not(:last-child) {
+        border-bottom: 0.05rem solid ${variables.colorWhite}; 
+
+    }
     
 `
 

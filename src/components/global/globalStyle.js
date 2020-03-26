@@ -69,12 +69,14 @@ export const GlobalStyle = createGlobalStyle`
     /* Typography */
     body {
         box-sizing: border-box;
-        font-family: "Montserrat";
+        font-family: "Roboto", sans-serif;
         font-weight: 500;
         /* font-size: 16px; */
         font-size: ${variables.defaultFontSize};
         line-height: ${variables.defaultLineHeight};
         color: ${variables.colorTextWhite};
+
+        
     }
 
 
