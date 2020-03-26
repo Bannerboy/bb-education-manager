@@ -31,13 +31,19 @@ class CourseEntry extends Component{
                 & .card {
                     display: flex;
                     font-size: 1.5rem;
-                    > * {
-                        margin-bottom: 2rem;
-                    }
+                   
                     & .tags {
                         display: flex;
                         align-items: flex-end;
                         flex-direction: column;
+                        @media (orientation: landscape) {
+                                flex-direction: row;
+                                align-items: center;
+                                justify-content: flex-end;
+                                & > * {
+                                    margin-left: 1rem;
+                                }
+                        }
                     }
                     & .tag {
                         /* width: inherit; */
@@ -57,6 +63,9 @@ class CourseEntry extends Component{
                     padding: 2rem 0;
                     justify-content: space-between;
                     flex-direction: row;
+                    &:hover {
+                        color: ${variables.colorWhite};
+                    } 
                 }
                 & .expandedCard {
                     border-top: 0.1rem solid ${variables.colorWhite};
@@ -66,6 +75,14 @@ class CourseEntry extends Component{
                     flex-direction: column;
                     max-height: ${this.state.clicked ? "100rem" : "0rem"};
                     overflow: hidden;
+                    > * {
+                        margin-bottom: 2rem;
+                    }
+                    & .courseCardFooter {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                    }
                     & .courseCardButtons {
                         display: flex; 
                         flex-direction: row;
@@ -82,6 +99,20 @@ class CourseEntry extends Component{
                         & .btnDelete {
                             color: ${variables.colorWhite};
                             background-color: ${variables.colorRed};
+                        }
+                    }
+                    & .courseCardOwner {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        &>* {
+                            margin-right: 1rem;
+                        }
+                        & img {
+                            width: 4rem;
+                            height: 4rem;
+                            object-fit: cover;
+                            border-radius: 100rem;
                         }
                     }
                     & .courseInfo {
@@ -121,10 +152,7 @@ class CourseEntry extends Component{
                     font-size: 2rem;
                 }
             }
-            &:hover {
-
-                opacity: 0.7;
-            } 
+            
 
         `   
         return(
@@ -154,6 +182,12 @@ class CourseEntry extends Component{
                                             <ul className="courseDetailParent">
                                                 <li>
                                                     <ul className="courseDetails">
+                                                        <li>Link:</li>
+                                                        <li><a href={this.props.course.url}>{this.props.course.platform}</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    <ul className="courseDetails">
                                                         <li>Teacher:</li>
                                                         <li>{this.props.course.author}</li>
                                                     </ul>
@@ -162,12 +196,6 @@ class CourseEntry extends Component{
                                                     <ul className="courseDetails">
                                                         <li>Length:</li>
                                                         <li>{this.props.course.courseLength}</li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <ul className="courseDetails">
-                                                        <li>Link:</li>
-                                                        <li><a href={this.props.course.url}>{this.props.course.platform}</a></li>
                                                     </ul>
                                                 </li>
                                                 <li>
@@ -191,14 +219,19 @@ class CourseEntry extends Component{
                                         </li>
                                     </ul>
                                 </li>
-                                <li className="courseCardButtons">
-                                    <button className="btnEnroll">Enroll</button>
-                                    <button className="btnDelete">Delete Course</button>
+                                <li>
+                                    <ul className="courseCardFooter">
+                                        <li className="courseCardButtons">
+                                            <button className="btnEnroll">Enroll</button>
+                                            <button className="btnDelete">Delete Course</button>
+                                        </li>
+                                        <li className="courseCardOwner">
+                                            <img src={this.props.course.bbUploader.photo} alt={this.props.course.bbUploader.name}/>
+                                            <figcaption><a href={"mailto:" + this.props.course.bbUploader.email.toString()}>{this.props.course.bbUploader.name}</a></figcaption>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li className="courseCardButtons">
-                                    {/* <img src={this.props.course.bbUploader.photo} /> */}
-                                    
-                                </li>
+                                
                             
                         </ul>
                     </li>
