@@ -25,16 +25,14 @@ class FirebaseManager{
         if (!firebase.apps.length) {
           firebase.initializeApp(firebaseConfig);
         }
-        // super(nameCallback, this);
         this.auth = firebase.auth()
         this.db = firebase.firestore()
         this.provider = new firebase.auth.GoogleAuthProvider();
-        console.log(firebase);
-        console.log(this);
+        // super(nameCallback, this);
         // this.getUserState.bind(this)
         // this.login.bind(this)
         this.auth.onAuthStateChanged(function(user) {
-            console.log(!user ? "logged out" : "Logged in as " + user)
+            // console.log(!user ? "logged out" : "Logged in as " + user)
           });
 
         

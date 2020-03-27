@@ -41,11 +41,20 @@ class CourseList extends Component{
           })
     }
 
+    
+
 
     render(){
         return(
             <CourseListContainer>
-               {this.state.posts.map(post => <CourseEntry course={post} key={post.url}/>) }
+                {this.state.posts
+                    .filter(post => {
+                        const regex = new RegExp(this.props.filterText, "gi")
+                        // console.log(this.props, post.platform, post.platform.match(regex))
+                        return post.platform.match(regex) || post.author.match(regex) ||post.title.match(regex) ||post.category.match(regex) ||post.difficulty.match(regex);
+                    })
+                    .map(post => <CourseEntry course={post} key={post.url}/>)
+                }
             </CourseListContainer>
         )
     }
