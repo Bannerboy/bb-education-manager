@@ -4,42 +4,58 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
-
-console.log(process.env)
 var firebaseConfig = {
-    apiKey: process.env.FB_APIKEY,
-    authDomain: process.env.FB_AUTHDOMAIN,
-    databaseURL: process.env.FB_DATABASEURL,
-    projectId: process.env.FB_PROJECTID,
-    storageBucket: process.env.FB_STORAGEBUCKET,
-    messagingSenderId: process.env.FB_MESSAGINGSENDERID,
-    appId: process.env.FB_APPID
+    apiKey: process.env.REACT_APP_FB_APIKEY,
+    authDomain: process.env.REACT_APP_FB_AUTHDOMAIN,
+    databaseURL: process.env.REACT_APP_FB_DATABASEURL,
+    projectId: process.env.REACT_APP_FB_PROJECTID,
+    storageBucket: process.env.REACT_APP_FB_STORAGEBUCKET,
+    messagingSenderId: process.env.REACT_APP_FB_MESSAGINGSENDERID,
+    appId: process.env.REACT_APP_FB_APPID,
+    measurementId: process.env.REACT_APP_FB_MEASUREMENTID
   };
+
   // Initialize Firebase
 
 class FirebaseManager{
     constructor() {
-      console.table(firebaseConfig);
-
         // super(props)
         // userCallback ? console.log(userCallback) : console.log("No name callback");
         // Initialize Firebase
-        // if (!firebase.apps.length) {
-        //   firebase.initializeApp(firebaseConfig);
-        // }
-        // // super(nameCallback, this);
-        // this.auth = firebase.auth()
-        // this.db = firebase.firestore()
-        // this.provider = new firebase.auth.GoogleAuthProvider();
-        // console.log(firebase);
-        // console.log(this);
-        // // this.getUserState.bind(this)
-        // // this.login.bind(this)
-        // this.auth.onAuthStateChanged(function(user) {
-        //     console.log(user)
-        //   });
-    }
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        // super(nameCallback, this);
+        this.auth = firebase.auth()
+        this.db = firebase.firestore()
+        this.provider = new firebase.auth.GoogleAuthProvider();
+        console.log(firebase);
+        console.log(this);
+        // this.getUserState.bind(this)
+        // this.login.bind(this)
+        this.auth.onAuthStateChanged(function(user) {
+            console.log(!user ? "logged out" : "Logged in as " + user)
+          });
 
+        
+    }
+    
+    async getCourses() {
+      console.log(this.db)
+      let courseArray = [];
+      await this.db.collection("courses").get().then(documentSet => {
+          // Print the ID and contents of each document
+          documentSet.forEach(doc => {
+            courseArray.push(doc.data())
+            console.log(doc.id, ' => ', doc.data());
+          });
+        })
+        .catch(err => {
+          // Error fetching documents
+          console.log('Error', err);
+        });
+        return courseArray;
+  }
 
 }
 

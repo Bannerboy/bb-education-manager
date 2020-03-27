@@ -168,8 +168,8 @@ class CourseEntry extends Component{
                             </li>
                             <li>
                                 <ul className="tags">
-                                    <li className="tag category">{this.props.course.tag}</li>
-                                    <li className="tag difficulty">{this.props.course.difficulty}</li>
+                                    <li className="tag category">{this.props.course.category.toString().toUpperCase()}</li>
+                                    <li className="tag difficulty">{this.props.course.difficulty.toString().toUpperCase()}</li>
                                 </ul>
                             </li>
                         </ul>
@@ -195,7 +195,7 @@ class CourseEntry extends Component{
                                                 <li>
                                                     <ul className="courseDetails">
                                                         <li>Length:</li>
-                                                        <li>{this.props.course.courseLength}</li>
+                                                        <li>{(Math.round(parseFloat(this.props.course.courseLength) * 10) / 600).toFixed(2).toString() + " Hours." }</li>
                                                     </ul>
                                                 </li>
                                                 <li>
@@ -250,7 +250,7 @@ CourseEntry.defaultProps = {
     course: {
         title: "Course Title",
         author: "Author Name",
-        tag: "Motion Design",
+        category: "Motion Design",
         platform: "Tutorial Site",
         difficulty: "Easy",
         courseLength: "5 Hours",
@@ -260,7 +260,7 @@ CourseEntry.defaultProps = {
         resource: "https://drive.google.com",
         bbUploader: {
             name: "Elliot Sverin",
-            photo: "http://bannerboy.com/img/team/sto/2x/elliot-sverin-2x.webp",
+            photo: "https://i.pravatar.cc/300",
             email: "elliot.sverin@bannerboy.com"
         },
     },

@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import React, { Component } from "react"
 import {variables} from "../global/variables"
+import CourseEntry from "./CourseEntry"
+
 
 export const CourseListContainer  = styled.ul`
     width: 100%;
@@ -19,10 +21,31 @@ export const CourseListContainer  = styled.ul`
 `
 
 class CourseList extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            posts: [],
+        }
+        this.componentDidMount.bind(this);
+    }
+
+    componentDidMount() {
+        let posts = [];
+        console.log(this.props.fireBase)
+        this.props.fireBase.getCourses().then(res => {
+            posts = res;
+            console.log(posts)
+            this.setState({
+                posts: posts
+            });
+          })
+    }
+
+
     render(){
         return(
             <CourseListContainer>
-                {this.props.children}
+               {this.state.posts.map(post => <CourseEntry course={post} key={post.url}/>) }
             </CourseListContainer>
         )
     }
