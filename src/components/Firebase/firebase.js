@@ -19,23 +19,35 @@ var firebaseConfig = {
 
 class FirebaseManager{
     constructor() {
-        // super(props)
+        // super(setUser)
         // userCallback ? console.log(userCallback) : console.log("No name callback");
         // Initialize Firebase
         if (!firebase.apps.length) {
           firebase.initializeApp(firebaseConfig);
         }
+        console.log("VA")
         this.auth = firebase.auth()
         this.db = firebase.firestore()
         this.provider = new firebase.auth.GoogleAuthProvider();
         // super(nameCallback, this);
         // this.getUserState.bind(this)
         // this.login.bind(this)
-        this.auth.onAuthStateChanged(function(user) {
-            // console.log(!user ? "logged out" : "Logged in as " + user)
-          });
+        // 
 
         
+    }
+
+    async addUserListener(callback){
+      await this.auth.onAuthStateChanged(function(user) {
+            console.log(!user ? "logged out" : "Logged in as " + user.displayName)
+             callback(user);
+          });
+    }
+
+    async getUserState() {
+      let user = this.auth.currentUser;
+      if(!user) return console.warn("User not logged in")
+      return user;
     }
     
     async getCourses() {
@@ -54,6 +66,24 @@ class FirebaseManager{
         });
         return courseArray;
   }
+  async login() {
+    console.log(this.provider, this)
+    let thisState = this;
+    console.log(thisState)
+    let loggedInUser = await this.auth.signInWithPopup(this.provider).then(function(result, thisState) {
+      console.log(result.user);
+      return result.user;
+      // This gives you a Google Access Token. You can use it to access the Google API.
+    }).catch(function(error) {
+      // Handle Errors here.
+      console.error(error);
+    });
+    
+    await this.getUserState();
+    
+    
+    return loggedInUser
+}
 
 }
 

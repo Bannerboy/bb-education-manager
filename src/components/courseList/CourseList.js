@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { Component } from "react"
 import {variables} from "../global/variables"
 import CourseEntry from "./CourseEntry"
+import AddCourse from "./AddCourse"
 
 
 export const CourseListContainer  = styled.ul`
@@ -47,6 +48,7 @@ class CourseList extends Component{
     render(){
         return(
             <CourseListContainer>
+                <AddCourse currentPosts={this.state.posts}/>
                 {this.state.posts
                     .filter(post => {
                         const regex = new RegExp(this.props.filterText, "gi")

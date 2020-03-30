@@ -3,20 +3,7 @@ import styled from "styled-components";
 import PropTypes from 'prop-types';
 import {variables} from "../global/variables"
 
-class CourseEntry extends Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            clicked: false,
-        }
-        this.expandCard = this.expandCard.bind(this);
-    }
-    expandCard(e){
-        this.setState({clicked: !this.state.clicked});
-    }
-
-    render(){
-        const Course  = styled.li`
+const Course  = styled.li`
             width: 100%;
             height: auto;
             background-color: ${variables.colorLightBlue};
@@ -63,17 +50,24 @@ class CourseEntry extends Component{
                     padding: 2rem 0;
                     justify-content: space-between;
                     flex-direction: row;
+                    cursor: pointer;
                     &:hover {
                         color: ${variables.colorWhite};
                     } 
                 }
+                & .clicked {
+                    padding: 2rem 0rem;
+                    max-height: 100rem;
+                }
+                & .unclicked {
+                    padding: 0rem 0rem;
+                    max-height: 0rem;
+                    }
                 & .expandedCard {
                     border-top: 0.1rem solid ${variables.colorWhite};
-                    transition: max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-                    padding: ${this.state.clicked ? "2rem 0rem" : "0 0"};
+                    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
                     justify-content: space-between;
                     flex-direction: column;
-                    max-height: ${this.state.clicked ? "100rem" : "0rem"};
                     overflow: hidden;
                     > * {
                         margin-bottom: 2rem;
@@ -155,6 +149,21 @@ class CourseEntry extends Component{
             
 
         `   
+
+class CourseEntry extends Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            clicked: false,
+        }
+        this.expandCard = this.expandCard.bind(this);
+    }
+    expandCard(e){
+        this.setState({clicked: !this.state.clicked});
+    }
+
+    render(){
+        
         return(
             <Course>
                 <ul>
@@ -175,7 +184,7 @@ class CourseEntry extends Component{
                         </ul>
                     </li>
                     <li>
-                        <ul className="expandedCard card">
+                        <ul className={!this.state.clicked ? "expandedCard card unclicked": "clicked expandedCard card" }>
                                 <li>
                                     <ul className="courseInfo">
                                         <li>

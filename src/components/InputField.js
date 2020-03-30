@@ -5,9 +5,6 @@ import {variables} from "./global/variables"
 
 const SearchField  = styled.input`
     width: 100%;
-    @media (orientation: landscape) {
-        width: 50%;
-    }
     /* background-color: ${variables.colorRed}; */
     border-radius: 3rem 3rem 2rem 2rem;
     height: 4rem;
@@ -36,7 +33,7 @@ class InputField extends Component{
 
     render(){
         return(
-            <SearchField type="text" name="searchfield" placeholder="Search Courses..." onChange={this.handleChange} value={this.props.searchText}/>
+            <SearchField type="search" name="searchfield" placeholder="Search Courses..." onChange={this.handleChange} value={this.props.searchText}/>
         )
     }
 }
