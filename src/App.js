@@ -19,7 +19,6 @@ class App extends Component{
     this.setFieldText = this.setFieldText.bind(this);
     this.setUser = this.setUser.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
-    console.log("THIS", this)
     this.state = ({
       searchFieldText: "",
       user: {}
@@ -41,7 +40,11 @@ class App extends Component{
         <GlobalStyle />
         <Wrapper>  
             <Header input_searchFieldText={this.state.searchFieldText} input_setFieldText={this.setFieldText} fireBase={this.props.firebase} user={this.state.user} setUser={this.setUser}/>
-            <CourseList fireBase={this.props.firebase} filterText={this.state.searchFieldText} user={this.state.user}/>
+            {
+              (!this.state.user || Object.keys(this.state.user).length === 0)
+              ? <p>Please Log IN</p>
+              : <CourseList fireBase={this.props.firebase} filterText={this.state.searchFieldText} user={this.state.user}/>
+            }
           </Wrapper>
       </React.Fragment>
       );

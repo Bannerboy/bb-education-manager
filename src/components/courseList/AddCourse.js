@@ -105,7 +105,7 @@ class AddCourse extends Component{
     async handleSubmit(e){
         e.preventDefault();
         let course = {...this.state.course};
-        course.bbUploader = {
+        course.uploader = {
             name: this.props.user.displayName,
             email: this.props.user.email,
             photo: this.props.user.photoURL
@@ -244,7 +244,7 @@ AddCourse.defaultProps = {
         url: "",
         excersize: "",
         resource: "",
-        bbUploader: {
+        uploader: {
             name: "",
             photo: "",
             email: ""

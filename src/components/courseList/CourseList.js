@@ -32,17 +32,14 @@ class CourseList extends Component{
     }
 
     componentDidMount() {
-        console.log(this.props.fireBase)
         this.getCourses()
-        
-        
     }
     
     getCourses(){
         let posts = [];
+        
         this.props.fireBase.getCourses().then(res => {
             posts = res;
-            console.log(posts)
             this.setState({
                 posts: posts
             });
@@ -53,31 +50,19 @@ class CourseList extends Component{
 
 
     render(){
-       
-            {if(this.props.user)
-                {
-                    return(
-                        <CourseListContainer>
-                        <AddCourse currentPosts={this.state.posts} firebase={this.props.fireBase} courseCallback={this.getCourses} user={this.props.user}/>
-                        {this.state.posts
-                            .filter(post => {
-                                const regex = new RegExp(this.props.filterText, "gi")
-                                // console.log(this.props, post.platform, post.platform.match(regex))
-                                return post.platform.match(regex) || post.author.match(regex) ||post.title.match(regex) ||post.category.match(regex) ||post.difficulty.match(regex);
-                            })
-                            .map(post => <CourseEntry course={post} key={post.url}/>)
-                        }
-                    </CourseListContainer>
-                    )
+        return(
+            <CourseListContainer>
+                <AddCourse currentPosts={this.state.posts} firebase={this.props.fireBase} courseCallback={this.getCourses} user={this.props.user}/>
+                {this.state.posts
+                    .filter(post => {
+                        const regex = new RegExp(this.props.filterText, "gi")
+                        return post.platform.match(regex) || post.author.match(regex) ||post.title.match(regex) ||post.category.match(regex) ||post.difficulty.match(regex);
+                    })
+                    .map(post => <CourseEntry course={post} key={post.url}/>)
                 }
-            else{
-                return(
-                    <p>Please Log in</p>
-                )
-            }
-            }
-            
-        
+            </CourseListContainer>
+        )
+
     }
 }
 CourseList.propTypes = {

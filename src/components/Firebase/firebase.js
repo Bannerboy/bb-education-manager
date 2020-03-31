@@ -62,11 +62,9 @@ class FirebaseManager{
       await this.db.collection("courses").get().then(documentSet => {
           // Print the ID and contents of each document
           documentSet.forEach(doc => {
-            console.log(doc.metadata)
             let course = Object.assign({}, doc.data())
             course.id = doc.id
             courseArray.push(course)
-            console.log(doc.id, ' => ', doc.data());
           });
         })
         .catch(err => {

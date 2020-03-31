@@ -235,8 +235,8 @@ class CourseEntry extends Component{
                                             <button className="btnDelete">Delete Course</button>
                                         </li>
                                         <li className="courseCardOwner">
-                                            <img src={this.props.course.bbUploader.photo} alt={this.props.course.bbUploader.name}/>
-                                            <figcaption><a href={"mailto:" + this.props.course.bbUploader.email.toString()}>{this.props.course.bbUploader.name}</a></figcaption>
+                                            <img src={this.props.course.uploader.photo} alt={this.props.course.uploader.name}/>
+                                            <figcaption><a href={"mailto:" + this.props.course.uploader.email.toString()}>{this.props.course.uploader.name}</a></figcaption>
                                         </li>
                                     </ul>
                                 </li>
@@ -267,7 +267,7 @@ CourseEntry.defaultProps = {
         url: "https://example.com",
         excersize: "https://attaboy.io",
         resource: "https://drive.google.com",
-        bbUploader: {
+        uploader: {
             name: "Elliot Sverin",
             photo: "https://i.pravatar.cc/300",
             email: "elliot.sverin@bannerboy.com"
