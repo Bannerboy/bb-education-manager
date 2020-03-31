@@ -60,7 +60,18 @@ export const GlobalStyle = createGlobalStyle`
     }
     ul {
         list-style: none;
+        & li.enrolled {
+            background-color: yellow;
+            border-bottom: 0.05rem solid ${variables.colorBlack} !important;
+            &>ul>.previewCard {
+                &:hover {
+                    color: ${variables.colorBlack} !important;
+                }
+            }
+
+        }
     }
+
 
 }
 

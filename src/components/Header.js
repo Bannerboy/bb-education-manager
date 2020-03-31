@@ -4,38 +4,7 @@ import {variables} from "./global/variables"
 import InputField from "./InputField"
 
 
-const HeaderBar  = styled.header`
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    @media (orientation: landscape) {
-        width: 50%;
-    }
-    /* background-color: ${variables.colorRed}; */
-    border-radius: 3rem 3rem 2rem 2rem;
-    height: 4rem;
-    font-size: 2rem;
-    padding:1rem;
-    & > a {
-        cursor: pointer;
-    }
-    &>a>img{
-        height: 4rem;
-        padding: 0rem;
-        width: 4rem;
-        border-radius: 50%;
-        object-fit: contain;
-    }
-    & > button {
-        background-color: ${variables.colorLightBlue};
-        color: ${variables.colorBlack};
-        height: 4rem;
-        padding: 0 1rem;
-    }
-    margin-bottom: 2rem;
-    
-    
-`
+
 
 class Header extends Component{
     constructor(props){
@@ -69,11 +38,46 @@ class Header extends Component{
 
 
     render(){
+        const HeaderBar  = styled.header`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    @media (orientation: landscape) {
+        width: 50%;
+    }
+    /* background-color: ${variables.colorRed}; */
+    border-radius: 3rem 3rem 2rem 2rem;
+    height: 4rem;
+    font-size: 2rem;
+    padding:1rem;
+    & > a {
+        cursor: pointer;
+    }
+    & #btn-avatar{
+        height: 4rem;
+        padding: 0rem;
+        width: 4rem;
+        border-radius: 50%;
+        background-image: url(${this.props.user.photoURL});
+        background-size: 4rem;
+        object-fit: cover;
+        object-position: 50% 50%;
+    }
+    & > #btn-login {
+        background-color: ${variables.colorLightBlue};
+        color: ${variables.colorBlack};
+        height: 4rem;
+        padding: 0 1rem;
+    }
+    margin-bottom: 2rem;
+    
+    
+`
         return(
             <HeaderBar>
                 <InputField searchText={this.props.input_searchFieldText} searchTextCallback={this.props.input_setFieldText}/>
                 {
-                    (!this.props.user || Object.keys(this.props.user).length === 0) ? <button onClick={this.login}>Login</button> : <a onClick={this.logOut}><img src={this.props.user.photoURL} alt={this.props.user.displayName}/></a>
+                    (!this.props.user || Object.keys(this.props.user).length === 0) ? <button id="btn-login" onClick={this.login}>Login</button> : <button id="btn-avatar" alt={this.props.user.displayName}></button>
                 }
             </HeaderBar>
         )

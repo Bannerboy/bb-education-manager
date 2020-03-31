@@ -58,7 +58,6 @@ class FirebaseManager{
   }
   
   async getCourses() {
-    console.log(this.db)
     let courseArray = [];
     await this.db.collection("courses").get().then(documentSet => {
         // Print the ID and contents of each document
@@ -86,6 +85,31 @@ class FirebaseManager{
     await this.getUserState();
     return loggedInUser
 }
+  async enrollUser(courseID, userID, enrollmentState){
+    await this.db.collection("courses").doc(courseID).get() ///Get the Course by ID
+      .then(course => {
+          if(course.exists) {return course.data()}
+          else {throw("Course not found")}
+      })
+      .then(course => {
+        let tempCourse = course;
+        let tempUsers = [];
+        if(enrollmentState){ //Does the user want to Enroll(true) or Unroll(False)?
+          if(tempCourse.hasOwnProperty("enrolledUsers")) tempUsers = tempCourse.enrolledUsers;
+          if(tempCourse.enrolledUsers && tempCourse.enrolledUsers.indexOf(userID) <= -1 || !tempCourse.enrolledUsers){ //Check if array of users exist, and if the current user isn't already in it
+            tempUsers.push(userID);
+            tempCourse.enrolledUsers = tempUsers;
+          }
+        } else {
+          if(tempCourse.hasOwnProperty("enrolledUsers")){
+            tempCourse.enrolledUsers = tempCourse.enrolledUsers.filter(user => {return user !== userID}) //If the user is in the list, filter the user out
+          }
+        }
+        return tempCourse
+      }).then(course => {
+        this.db.collection("courses").doc(courseID).update(course);
+      })
+  }
 
   async logOut() {
     await this.auth.signOut().then(() => {

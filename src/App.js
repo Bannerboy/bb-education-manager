@@ -36,7 +36,7 @@ class App extends Component{
  
   render(){
     return (
-      <React.Fragment>
+      <Fragment>
         <GlobalStyle />
         <Wrapper>  
             <Header input_searchFieldText={this.state.searchFieldText} input_setFieldText={this.setFieldText} fireBase={this.props.firebase} user={this.state.user} setUser={this.setUser}/>
@@ -46,7 +46,7 @@ class App extends Component{
               : <CourseList fireBase={this.props.firebase} filterText={this.state.searchFieldText} user={this.state.user}/>
             }
           </Wrapper>
-      </React.Fragment>
+      </Fragment>
       );
   }
 }

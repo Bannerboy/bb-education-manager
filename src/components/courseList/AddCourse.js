@@ -153,7 +153,7 @@ class AddCourse extends Component{
                                 <div className="form-group">
                                     {/* <label htmlFor="title">Title</label> */}
                                     <label htmlFor="author">Teacher</label>
-                                    <input key="add-course-form_author" id="title" type="text" name="author" value={this.state.course.title} onChange={this.handleChange} placeholder="Name of Teacher" required="required"/>
+                                    <input key="add-course-form_author" id="author" type="text" name="author" value={this.state.course.title} onChange={this.handleChange} placeholder="Name of Teacher" required="required"/>
                                     {/* <input key="add-course-form_title" id="title" type="text" name="title" value={this.state.course.title} onChange={this.handleChange} placeholder={this.props.user.uid} required="required"/> */}
                                 </div>
                                 <div className="form-group">

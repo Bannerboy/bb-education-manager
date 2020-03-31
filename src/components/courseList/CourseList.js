@@ -59,7 +59,7 @@ class CourseList extends Component{
                         const regex = new RegExp(this.props.filterText, "gi")
                         return post.platform.match(regex) || post.author.match(regex) ||post.title.match(regex) ||post.category.match(regex) ||post.difficulty.match(regex);
                     })
-                    .map(post => <CourseEntry course={post} key={post.url}/>)
+                    .map(post => <CourseEntry course={post} firebase={this.props.fireBase} user={this.props.user} key={post.url}/>)
                 }
             </CourseListContainer>
         )

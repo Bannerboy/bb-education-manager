@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Firebase, { FirebaseContext } from './components/Firebase';
 
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 
 ReactDOM.render(
   <React.StrictMode>

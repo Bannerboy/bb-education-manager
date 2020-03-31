@@ -11,6 +11,7 @@ const Course  = styled.li`
             transition: opacity 0.3s ease-in-out;
             opacity: 1;
             color: ${variables.colorBlack};
+            
             &>ul {
                 display: flex;
                 flex-direction: column;
@@ -155,17 +156,24 @@ class CourseEntry extends Component{
         super(props);
         this.state = {
             clicked: false,
+            enrolled: (this.props.course.enrolledUsers && this.props.course.enrolledUsers.indexOf(this.props.user.uid) > -1),
         }
         this.expandCard = this.expandCard.bind(this);
+        this.enroll = this.enroll.bind(this);
     }
     expandCard(e){
         this.setState({clicked: !this.state.clicked});
+    }
+    async enroll(e){
+        e.preventDefault();
+        await this.props.firebase.enrollUser(this.props.course.id, this.props.user.uid, !this.state.enrolled)
+        this.setState({enrolled: !this.state.enrolled});
     }
 
     render(){
         
         return(
-            <Course>
+            <Course className={this.state.enrolled ? "enrolled" : ""}>
                 <ul>
                     <li>
                         <ul className="previewCard card" onClick={this.expandCard}>
@@ -231,7 +239,7 @@ class CourseEntry extends Component{
                                 <li>
                                     <ul className="courseCardFooter">
                                         <li className="courseCardButtons">
-                                            <button className="btnEnroll">Enroll</button>
+                                            <button className="btnEnroll" style={this.state.enrolled ? {backgroundColor: variables.colorDarkBlue, color: variables.colorWhite}: {}} onClick={this.enroll}>{this.state.enrolled ? "Unroll" : "Enroll"}</button>
                                             <button className="btnDelete">Delete Course</button>
                                         </li>
                                         <li className="courseCardOwner">
@@ -265,12 +273,13 @@ CourseEntry.defaultProps = {
         courseLength: "5 Hours",
         description: "Minim id sint sit dolore consectetur labore laboris do aliqua ut eu proident est. Elit mollit pariatur deserunt deserunt laborum amet tempor anim in qui ullamco. Minim nulla Lorem qui non labore tempor. Sit ea dolore ullamco enim dolore irure eu. Exercitation ipsum magna commodo adipisicing elit laboris esse proident labore culpa. Proident nostrud Lorem voluptate est ut.",
         url: "https://example.com",
+        enrolledUsers: [],
         excersize: "https://attaboy.io",
         resource: "https://drive.google.com",
         uploader: {
-            name: "Elliot Sverin",
+            name: "Demo User",
             photo: "https://i.pravatar.cc/300",
-            email: "elliot.sverin@bannerboy.com"
+            email: "demouser@example.com"
         },
     },
     };
