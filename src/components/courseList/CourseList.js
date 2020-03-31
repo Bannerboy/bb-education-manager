@@ -54,6 +54,7 @@ class CourseList extends Component{
             <CourseListContainer>
                 <AddCourse currentPosts={this.state.posts} firebase={this.props.fireBase} courseCallback={this.getCourses} user={this.props.user}/>
                 {this.state.posts
+                    .sort((a, b) => b.timestamp - a.timestamp)
                     .filter(post => {
                         const regex = new RegExp(this.props.filterText, "gi")
                         return post.platform.match(regex) || post.author.match(regex) ||post.title.match(regex) ||post.category.match(regex) ||post.difficulty.match(regex);

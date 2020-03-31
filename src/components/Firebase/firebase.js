@@ -18,65 +18,63 @@ var firebaseConfig = {
   // Initialize Firebase
 
 class FirebaseManager{
-    constructor() {
-        // super(setUser)
-        // userCallback ? console.log(userCallback) : console.log("No name callback");
-        // Initialize Firebase
-        if (!firebase.apps.length) {
-          firebase.initializeApp(firebaseConfig);
-        }
-        this.auth = firebase.auth()
-        this.db = firebase.firestore()
-        this.provider = new firebase.auth.GoogleAuthProvider();
-        // super(nameCallback, this);
-        // this.getUserState.bind(this)
-        // this.login.bind(this)
-        // 
+  constructor() {
+      // super(setUser)
+      // userCallback ? console.log(userCallback) : console.log("No name callback");
+      // Initialize Firebase
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      this.auth = firebase.auth()
+      this.db = firebase.firestore()
+      this.provider = new firebase.auth.GoogleAuthProvider();
+      // super(nameCallback, this);
+      // this.getUserState.bind(this)
+      this.login = this.login.bind(this)
+      this.logOut = this.logOut.bind(this)
+      // 
 
-        
-    }
+      
+  }
 
-    async addUserListener(callback){
-      await this.auth.onAuthStateChanged(function(user) {
-            console.log(!user ? "logged out" : "Logged in as " + user.displayName)
-             callback(user);
-          });
-    }
-
-    async getUserState() {
-      let user = this.auth.currentUser;
-      if(!user) return console.warn("User not logged in")
-      return user;
-    }
-
-    async submitCourse(course) {
-      await this.db.collection("courses").add(course)
-        .then(result => {
-            console.log("Successfully posted: ", course, " as " + result.id)
-        })
-    }
-    
-    async getCourses() {
-      console.log(this.db)
-      let courseArray = [];
-      await this.db.collection("courses").get().then(documentSet => {
-          // Print the ID and contents of each document
-          documentSet.forEach(doc => {
-            let course = Object.assign({}, doc.data())
-            course.id = doc.id
-            courseArray.push(course)
-          });
-        })
-        .catch(err => {
-          // Error fetching documents
-          console.log('Error', err);
+  async addUserListener(callback){
+    await this.auth.onAuthStateChanged(function(user) {
+          console.log(!user ? "logged out" : "Logged in as " + user.displayName)
+            callback(user);
         });
-        return courseArray;
+  }
+
+  async getUserState() {
+    let user = this.auth.currentUser;
+    if(!user) return console.warn("User not logged in")
+    return user;
+  }
+
+  async submitCourse(course) {
+    await this.db.collection("courses").add(course)
+      .then(result => {
+          console.log("Successfully posted: ", course, " as " + result.id)
+      })
+  }
+  
+  async getCourses() {
+    console.log(this.db)
+    let courseArray = [];
+    await this.db.collection("courses").get().then(documentSet => {
+        // Print the ID and contents of each document
+        documentSet.forEach(doc => {
+          let course = Object.assign({}, doc.data())
+          course.id = doc.id
+          courseArray.push(course)
+        });
+      })
+      .catch(err => {
+        // Error fetching documents
+        console.log('Error', err);
+      });
+      return courseArray;
   }
   async login() {
-    console.log(this.provider, this)
-    let thisState = this;
-    console.log(thisState)
     let loggedInUser = await this.auth.signInWithPopup(this.provider).then(function(result, thisState) {
       console.log(result.user);
       return result.user;
@@ -85,12 +83,18 @@ class FirebaseManager{
       // Handle Errors here.
       console.error(error);
     });
-    
     await this.getUserState();
-    
-    
     return loggedInUser
 }
+
+  async logOut() {
+    await this.auth.signOut().then(() => {
+      console.log("Signed out User")
+    })
+    .catch(error => {
+      console.error(error)
+    })
+  }
 
 }
 

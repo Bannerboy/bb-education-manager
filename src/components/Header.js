@@ -16,7 +16,10 @@ const HeaderBar  = styled.header`
     height: 4rem;
     font-size: 2rem;
     padding:1rem;
-    & > img {
+    & > a {
+        cursor: pointer;
+    }
+    &>a>img{
         height: 4rem;
         padding: 0rem;
         width: 4rem;
@@ -39,6 +42,7 @@ class Header extends Component{
         super(props);
         this.handleChange = this.handleChange.bind(this)
         this.login = this.login.bind(this)
+        this.logOut = this.logOut.bind(this)
         this.componentDidMount = this.componentDidMount.bind(this);
         
     }
@@ -56,6 +60,12 @@ class Header extends Component{
         e.preventDefault();
         this.props.setUser(await this.props.fireBase.login());
     }
+    async logOut(e){
+        e.preventDefault();
+        const userConfirm = window.confirm("Do you wish to log out?")
+        await this.props.fireBase.logOut();
+        if(userConfirm) this.props.setUser({});
+    }
 
 
     render(){
@@ -63,7 +73,7 @@ class Header extends Component{
             <HeaderBar>
                 <InputField searchText={this.props.input_searchFieldText} searchTextCallback={this.props.input_setFieldText}/>
                 {
-                    this.props.user ? <img src={this.props.user.photoURL} alt={this.props.user.displayName}/> : <button onClick={this.login}>Login</button>
+                    (!this.props.user || Object.keys(this.props.user).length === 0) ? <button onClick={this.login}>Login</button> : <a onClick={this.logOut}><img src={this.props.user.photoURL} alt={this.props.user.displayName}/></a>
                 }
             </HeaderBar>
         )
