@@ -92,21 +92,33 @@ class AddCourse extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            clicked: true,
+            clicked: false,
             course: this.props.course,
         }
         this.expandCard = this.expandCard.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     expandCard(e){
         this.setState({clicked: !this.state.clicked});
 
     }
-    handleSubmit(e){
+    async handleSubmit(e){
         e.preventDefault();
-        alert("SUBMIT")
+        let course = {...this.state.course};
+        course.bbUploader = {
+            name: this.props.user.displayName,
+            email: this.props.user.email,
+            photo: this.props.user.photoURL
+        }
+        course.timestamp = Date.now();
+        await this.props.firebase.submitCourse(course).then(() =>{
+            this.props.courseCallback();
+
+        });
+        this.setState({course: this.props.course})
     }
     handleChange = e => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
         let tempCourse = {...this.state.course};
         tempCourse[name] = value;
     
@@ -114,6 +126,10 @@ class AddCourse extends Component{
             course: tempCourse
         });
       };
+    capitalize = (s) => {
+        if (typeof s !== 'string') return ''
+        return s.charAt(0).toUpperCase() + s.slice(1)
+    }
 
     render(){
        
@@ -127,10 +143,18 @@ class AddCourse extends Component{
                     </li>
                     <li>
                         <div className={!this.state.clicked ? "expandedCard card unclicked": "clicked expandedCard card" }>
-                            <form onSubmit={this.handleForm}>
+                            <form onSubmit={this.handleSubmit}>
                                 <div className="form-group">
+                                    {/* <label htmlFor="title">Title</label> */}
                                     <label htmlFor="title">Title</label>
                                     <input key="add-course-form_title" id="title" type="text" name="title" value={this.state.course.title} onChange={this.handleChange} placeholder="Title of the course" required="required"/>
+                                    {/* <input key="add-course-form_title" id="title" type="text" name="title" value={this.state.course.title} onChange={this.handleChange} placeholder={this.props.user.uid} required="required"/> */}
+                                </div>
+                                <div className="form-group">
+                                    {/* <label htmlFor="title">Title</label> */}
+                                    <label htmlFor="author">Teacher</label>
+                                    <input key="add-course-form_author" id="title" type="text" name="author" value={this.state.course.title} onChange={this.handleChange} placeholder="Name of Teacher" required="required"/>
+                                    {/* <input key="add-course-form_title" id="title" type="text" name="title" value={this.state.course.title} onChange={this.handleChange} placeholder={this.props.user.uid} required="required"/> */}
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="platform">Course Platform</label>
@@ -139,8 +163,8 @@ class AddCourse extends Component{
                                         <datalist id="platformlist">
                                             {
                                             this.props.currentPosts
-                                                .filter((post, i) => this.props.currentPosts.map(post => post.platform).indexOf(post.platform) === i)
-                                                .map(post => <option key={post.platform + "_" + post.title} value={post.platform}>{post.platform}</option>)}
+                                                .filter((post, i) => this.props.currentPosts.map(post => post.platform.toLowerCase()).indexOf(post.platform.toLowerCase()) === i)
+                                                .map(post => <option key={post.platform + "_" + post.title} value={this.capitalize(post.platform)}>{this.capitalize(post.platform)}</option>)}
                                         </datalist>
                                     </span>
                                 </div>
@@ -176,8 +200,8 @@ class AddCourse extends Component{
                                         <input key="add-course-form_category" id="category" list="categorylist" type="text" name="category" value={this.state.course.category} onChange={this.handleChange} placeholder="Category" required="required"/>
                                         <datalist id="categorylist">
                                             {this.props.currentPosts
-                                                .filter((post, i) => this.props.currentPosts.map(post => post.category).indexOf(post.category) === i)
-                                                .map(post => <option key={post.category + "_" + post.title} value={post.category}>{post.category}</option>)}
+                                                .filter((post, i) => this.props.currentPosts.map(post => post.category.toLowerCase()).indexOf(post.category.toLowerCase()) === i)
+                                                .map(post => <option key={post.category + "_" + post.title} value={this.capitalize(post.category)}>{this.capitalize(post.category)}</option>)}
                                         </datalist>
                                     </span>
                                 </div>

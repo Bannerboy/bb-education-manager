@@ -25,7 +25,6 @@ class FirebaseManager{
         if (!firebase.apps.length) {
           firebase.initializeApp(firebaseConfig);
         }
-        console.log("VA")
         this.auth = firebase.auth()
         this.db = firebase.firestore()
         this.provider = new firebase.auth.GoogleAuthProvider();
@@ -49,6 +48,13 @@ class FirebaseManager{
       if(!user) return console.warn("User not logged in")
       return user;
     }
+
+    async submitCourse(course) {
+      await this.db.collection("courses").add(course)
+        .then(result => {
+            console.log("Successfully posted: ", course, " as " + result.id)
+        })
+    }
     
     async getCourses() {
       console.log(this.db)
@@ -56,7 +62,10 @@ class FirebaseManager{
       await this.db.collection("courses").get().then(documentSet => {
           // Print the ID and contents of each document
           documentSet.forEach(doc => {
-            courseArray.push(doc.data())
+            console.log(doc.metadata)
+            let course = Object.assign({}, doc.data())
+            course.id = doc.id
+            courseArray.push(course)
             console.log(doc.id, ' => ', doc.data());
           });
         })

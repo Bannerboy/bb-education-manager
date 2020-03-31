@@ -192,7 +192,7 @@ class CourseEntry extends Component{
                                                 <li>
                                                     <ul className="courseDetails">
                                                         <li>Link:</li>
-                                                        <li><a href={this.props.course.url}>{this.props.course.platform}</a></li>
+                                                        <li><a href={this.props.course.url}  target="_blank" rel="noopener noreferrer">{this.props.course.platform}</a></li>
                                                     </ul>
                                                 </li>
                                                 <li>
@@ -210,13 +210,13 @@ class CourseEntry extends Component{
                                                 <li>
                                                     <ul className="courseDetails">
                                                         <li>Upload Excersize here:</li>
-                                                        <li><a href={this.props.course.excersize}>Attaboy</a></li>
+                                                        <li><a href={this.props.course.excersize} target="_blank" rel="noopener noreferrer">Attaboy</a></li>
                                                     </ul>
                                                 </li>
                                                 <li>
                                                     <ul className="courseDetails">
                                                         <li>Resource Files:</li>
-                                                        <li><a href={this.props.course.resource}>Link to Resource Files</a></li>
+                                                        <li><a href={this.props.course.resource} target="_blank" rel="noopener noreferrer">Link to Resource Files</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>

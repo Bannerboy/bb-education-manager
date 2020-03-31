@@ -26,7 +26,6 @@ class App extends Component{
     })
   }
   setFieldText(text) {
-    console.log(this)
     this.setState({searchFieldText: text})
   }
   setUser(user) {
@@ -42,7 +41,7 @@ class App extends Component{
         <GlobalStyle />
         <Wrapper>  
             <Header input_searchFieldText={this.state.searchFieldText} input_setFieldText={this.setFieldText} fireBase={this.props.firebase} user={this.state.user} setUser={this.setUser}/>
-            <CourseList fireBase={this.props.firebase} filterText={this.state.searchFieldText}/>
+            <CourseList fireBase={this.props.firebase} filterText={this.state.searchFieldText} user={this.state.user}/>
           </Wrapper>
       </React.Fragment>
       );

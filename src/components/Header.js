@@ -63,7 +63,7 @@ class Header extends Component{
             <HeaderBar>
                 <InputField searchText={this.props.input_searchFieldText} searchTextCallback={this.props.input_setFieldText}/>
                 {
-                    this.props.user.uid ? <img src={this.props.user.photoURL} alt={this.props.user.displayName}/> : <button onClick={this.login}>Login</button>
+                    this.props.user ? <img src={this.props.user.photoURL} alt={this.props.user.displayName}/> : <button onClick={this.login}>Login</button>
                 }
             </HeaderBar>
         )
