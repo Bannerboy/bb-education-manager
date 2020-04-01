@@ -78,7 +78,7 @@ class Header extends Component{
             <HeaderBar>
                 <InputField searchText={this.props.input_searchFieldText} searchTextCallback={this.props.input_setFieldText}/>
                 {
-                    (!this.props.user || Object.keys(this.props.user).length === 0) ? <button id="btn-login" onClick={this.login}>Login</button> : <button id="btn-avatar" alt={this.props.user.displayName}></button>
+                    (!this.props.user || Object.keys(this.props.user).length === 0) ? <button id="btn-login" onClick={this.login}>Login</button> : <button id="btn-avatar" onClick={this.logOut} alt={this.props.user.displayName}></button>
                 }
             </HeaderBar>
         )
