@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { Component } from "react"
 import {variables} from "./global/variables"
 import InputField from "./InputField"
+import PropTypes from "prop-types";
 
 
 
@@ -58,7 +59,7 @@ class Header extends Component{
         padding: 0rem;
         width: 4rem;
         border-radius: 50%;
-        background-image: url(${this.props.user.photoURL});
+        background-image: url(${this.props.user != null ? this.props.user.photoURL : "https://i.pravatar.cc/300"});
         background-size: 4rem;
         object-fit: cover;
         object-position: 50% 50%;
@@ -84,10 +85,14 @@ class Header extends Component{
     }
 }
 Header.propTypes = {
+    user: PropTypes.object,
     
 };
 Header.defaultProps = {
-    
+    user: {
+        displayName: "User",
+        photoURL: "https://i.pravatar.cc/300"
+    }
   };
 
 export default Header;
