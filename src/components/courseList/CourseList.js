@@ -30,16 +30,18 @@ class CourseList extends Component{
         this.componentDidMount.bind(this);
         this.getCourses = this.getCourses.bind(this);
     }
-
+    
     componentDidMount() {
         this.getCourses()
+        
     }
     
     getCourses(){
-        let posts = [];
+        let posts = {};
         
-        this.props.fireBase.getCourses().then(res => {
-            posts = res;
+        this.props.fireBase.getCollection("courses").then(res => {
+            posts = Object.entries(res).map(course => course[1]);
+            // console.log()
             this.setState({
                 posts: posts
             });
@@ -53,13 +55,18 @@ class CourseList extends Component{
         return(
             <CourseListContainer>
                 <AddCourse currentPosts={this.state.posts} firebase={this.props.fireBase} courseCallback={this.getCourses} user={this.props.user}/>
-                {this.state.posts
-                    .sort((a, b) => b.timestamp - a.timestamp)
+                {(this.state.posts)
+                    .sort((post_a, post_b) => post_b.timestamp - post_a.timestamp)
+                    .sort((post_a, post_b) => {
+                        const a = post_a.enrolledUsers && post_a.enrolledUsers.length > 0 ? post_a.enrolledUsers.indexOf(this.props.user.uid) > -1 : false
+                        const b = post_b.enrolledUsers && post_b.enrolledUsers.length > 0 ? post_b.enrolledUsers.indexOf(this.props.user.uid) > -1 : false
+                        return (a === b)? 0 : a? -1 : 1
+                    })
                     .filter(post => {
                         const regex = new RegExp(this.props.filterText, "gi")
-                        return post.platform.match(regex) || post.author.match(regex) ||post.title.match(regex) ||post.category.match(regex) ||post.difficulty.match(regex);
+                        return post.platform.match(regex)|| post.author.match(regex) ||post.title.match(regex) ||post.category.match(regex) ||post.difficulty.match(regex);
                     })
-                    .map(post => <CourseEntry course={post} firebase={this.props.fireBase} user={this.props.user} key={post.url}/>)
+                    .map(post => <CourseEntry userList={this.props.userList} course={post} firebase={this.props.fireBase} user={this.props.user} key={post.url} fetchCourse={this.getCourses}/>)
                 }
             </CourseListContainer>
         )

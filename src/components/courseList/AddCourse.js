@@ -11,6 +11,8 @@ font-weight: 400;
 transition: opacity 0.3s ease-in-out;
 opacity: 1;
 color: ${variables.colorBlack};
+box-shadow: inset 0 -1rem 2rem -1rem rgba(0,0,0,0.3);
+
 &>ul {
     display: flex;
     flex-direction: column;
@@ -37,7 +39,7 @@ color: ${variables.colorBlack};
             max-height: 0rem;
         }
     & .expandedCard {
-        border-top: 0.1rem solid ${variables.colorWhite};
+        /* border-top: 0.1rem solid ${variables.colorWhite}; */
         transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
         justify-content: space-between;
         flex-direction: column;
@@ -105,11 +107,7 @@ class AddCourse extends Component{
     async handleSubmit(e){
         e.preventDefault();
         let course = {...this.state.course};
-        course.uploader = {
-            name: this.props.user.displayName,
-            email: this.props.user.email,
-            photo: this.props.user.photoURL
-        }
+        course.uploader = this.props.user.uid;
         course.timestamp = Date.now();
         await this.props.firebase.submitCourse(course).then(() =>{
             this.props.courseCallback();
@@ -244,11 +242,7 @@ AddCourse.defaultProps = {
         url: "",
         excersize: "",
         resource: "",
-        uploader: {
-            name: "",
-            photo: "",
-            email: ""
-        },
+        uploader: "",
     },
     };
 
