@@ -150,6 +150,7 @@ const Course  = styled.li`
                                 flex-direction: row;
                                 justify-content: center;
                                 &>li{
+                                    cursor: pointer;
                                     
                                     &>*, >*>svg{
                                         position: relative;
@@ -232,7 +233,8 @@ class CourseEntry extends Component{
             clicked: true,
             enrolled: (this.props.course.enrolledUsers && this.props.course.enrolledUsers.indexOf(this.props.user.uid) > -1),
             enrolledListOpen: false,
-            rating: 3.8,
+            rating: 0,
+            userRatings : {},
             stars: {
                 1: "0%",
                 2: "0%",
@@ -245,13 +247,13 @@ class CourseEntry extends Component{
         this.expandEnrolledUsers = this.expandEnrolledUsers.bind(this);
         this.enroll = this.enroll.bind(this);
         this.userListLoaded = this.userListLoaded.bind(this);
-        this.setstarRating = this.setstarRating.bind(this);
+        this.setstarRating = this.setStarRating.bind(this);
+        this.averageUserRatingList = this.averageUserRatingList.bind(this);
         
     }
     
     componentDidMount(){
-        this.setstarRating();
-
+        this.averageUserRatingList();
     }
     expandCard(e){
         this.setState({clicked: !this.state.clicked});
@@ -273,11 +275,35 @@ class CourseEntry extends Component{
     percentageNormalizer(val) {
         return Math.round((val / 5) * 100);
     }
+    async averageUserRatingList() {
+        let rating = 0;
+        let noOfUsers = 0;
+        //Set existing state
+        if(this.props.course.userRatings && Object.keys(this.props.course.userRatings).length > 0) await this.setState({userRatings: this.props.course.userRatings});
+        const userRatings = this.state.userRatings;
+        Object.keys(userRatings).forEach(function (key) {
+            rating += userRatings[key]
+            noOfUsers++;
+        });
 
-    setstarRating() {
+        const averageRating = rating !== 0 ? rating / noOfUsers : 0;
+        this.setState({
+            rating: averageRating,
+        })
+        this.setStarRating()
+    }
+
+    async submitRating(ratingVal){
+        let userRatings = {};
+        if(this.props.course.userRatings) userRatings = this.props.course.userRatings; 
+        userRatings[this.props.user.uid] = ratingVal; 
+        this.setState({userRatings: userRatings,})
+        await this.props.firebase.updateCourseRating(this.props.course.id, this.props.user.uid, ratingVal)
+        this.averageUserRatingList();
+    }
+
+    setStarRating() {
         const ratingPercentage = this.percentageNormalizer(this.state.rating) //Normalize the score on a percentage scale
-        // console.log("RatingsPercent", ratingPercentage, "modifier", modifier, ((ratingPercentage - this.percentageNormalizer(2)) / .2))
-        
         if(ratingPercentage <= 20){
             this.setState({stars: {
                 1: ((ratingPercentage - this.percentageNormalizer(0)) / .2) + "%", 
@@ -354,31 +380,31 @@ class CourseEntry extends Component{
                                             <ul className="courseDetailParent">
                                                 <li className="ratings">
                                                     <ul>
-                                                        <li>
+                                                        <li onClick={() => this.submitRating(1)}>
                                                             <FontAwesomeIcon icon={starRegular}/>
                                                             <span style={{clipPath: `polygon(0 0, ${this.state.stars[1]} 0, ${this.state.stars[1]} 100%, 0 100%)`}}>
                                                                 <FontAwesomeIcon className="starFilled" icon={starSolid} />
                                                             </span>
                                                         </li>
-                                                        <li>
+                                                        <li onClick={() => this.submitRating(2)}>
                                                             <FontAwesomeIcon icon={starRegular}/>
                                                             <span style={{clipPath: `polygon(0 0, ${this.state.stars[2]} 0, ${this.state.stars[2]} 100%, 0 100%)`}}>
                                                                 <FontAwesomeIcon className="starFilled" icon={starSolid} />
                                                             </span>
                                                         </li>
-                                                        <li>
+                                                        <li onClick={() => this.submitRating(3)}>
                                                             <FontAwesomeIcon icon={starRegular}/>
                                                             <span style={{clipPath: `polygon(0 0, ${this.state.stars[3]} 0, ${this.state.stars[3]} 100%, 0 100%)`}}>
                                                                 <FontAwesomeIcon className="starFilled" icon={starSolid} />
                                                             </span>
                                                         </li>
-                                                        <li>
+                                                        <li onClick={() => this.submitRating(4)}>
                                                             <FontAwesomeIcon icon={starRegular}/>
                                                             <span style={{clipPath: `polygon(0 0, ${this.state.stars[4]} 0, ${this.state.stars[4]} 100%, 0 100%)`}}>
                                                                 <FontAwesomeIcon className="starFilled" icon={starSolid} />
                                                             </span>
                                                         </li>
-                                                        <li>
+                                                        <li onClick={() => this.submitRating(5)}>
                                                             <FontAwesomeIcon icon={starRegular}/>
                                                             <span style={{clipPath: `polygon(0 0, ${this.state.stars[5]} 0, ${this.state.stars[5]} 100%, 0 100%)`}}>
                                                                 <FontAwesomeIcon className="starFilled" icon={starSolid} />

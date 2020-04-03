@@ -66,8 +66,10 @@ class Header extends Component{
     async logOut(e){
         e.preventDefault();
         const userConfirm = window.confirm("Do you wish to log out?")
-        await this.props.fireBase.logOut();
-        if(userConfirm) this.props.setUser({});
+        if(userConfirm) {
+            await this.props.fireBase.logOut();
+            this.props.setUser({});
+        }
     }
 
 

@@ -34,6 +34,7 @@ class FirebaseManager{
       this.logOut = this.logOut.bind(this)
       this.updateUser = this.updateUser.bind(this)
       this.addUserListener = this.addUserListener.bind(this)
+      this.updateCourseRating = this.updateCourseRating.bind(this)
       this.updateUser();
       // 
 
@@ -107,6 +108,27 @@ class FirebaseManager{
     await this.getUserState();
     return loggedInUser
 }
+  async updateCourseRating(courseID, userID, rating){
+    await this.db.collection("courses").doc(courseID).get()
+    .then(course => {
+      if(course.exists) {return course.data()}
+      else {throw("Course not found")}
+    })
+    .then(course => {
+      let tempCourse = course;
+      let ratingList = {};
+
+      if(tempCourse.hasOwnProperty("userRatings")) ratingList = tempCourse.userRatings;
+      ratingList[userID] = rating;
+      tempCourse.userRatings = ratingList;
+      
+      return tempCourse;
+    })
+    .then(course => {
+      this.db.collection("courses").doc(courseID).update(course);
+    })
+  }
+
   async enrollUser(courseID, userID, enrollmentState){
     await this.db.collection("courses").doc(courseID).get() ///Get the Course by ID
       .then(course => {
