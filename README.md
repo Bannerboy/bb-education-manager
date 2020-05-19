@@ -1,4 +1,20 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
+  <a href="https://www.bannerboy.com">
+    <img alt="bannerboy" src="http://bannerboy.com/img/icons/logo-stroke.svg" height="150px" />
+  </a>
+</div>
+
+<br />
+
+# Platform for managing and reviewing Tutorials and Courses
+
+This tool is for internally reviewing and keeping track of courses that you're team is taking. The idea is that anyone can enroll in courses and review them, so others in the team can make sure they spend their time on courses that keeps a high quality.
+
+## Current Tech-Stack
+
+* [Create React App](https://github.com/facebook/create-react-app).
+* [Firebase](https://firebase.google.com/)
+* [Styled-Components](https://styled-components.com/)
 
 ## Available Scripts
 
@@ -37,28 +53,6 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
 ### Deployment
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
@@ -66,3 +60,33 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+## Firebase Setup
+The current setup uses collections for storing information about the signed up users and the courses. Currently they're working towards collections named `courses` and `users` - so if you're responsible for setting up the Firebase backend; please add those in, or create your own names and update them in the [firebase.js](src/components/Firebase/firebase.js) file.
+
+Make sure to create a dotenv for your Firebase-settings and prefix them with `REACT_APP_`.
+
+Don't forget to set up your Firebase whitelist as the environment variables will be bundled in your code anyways.
+
+## Styling
+Currently the components are styled with Styled-Components.
+
+This means that the stylesheets are scoped for every component, and contained inside of every component file. Inside the global folder there is a [variables.js](src/components/global/variables.js) file to adjust some values that are repeated, for more general or none-scoped styling please refer to the [globalStyle.js](src/components/global/globalStyle.js).
+
+## Things to be done
+- [ ] Write code-tests for the platform.
+- [ ] Make the names in the [variables.js](src/components/global/variables.js) more general instead of color-dependant.
+- [ ] Make a similar system to the "Enrolled Users" for users who completed courses.
+- [ ] Styling overhaul.
+- [ ] Potential system for letting users add a comment regarding the course.
+- [ ] System for updating courses that have been published.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+To learn Styled-Components, check out the [Styled-Components documentation](https://styled-components.com/docs).
+
+To learn Firebase, check out the [Firebase documentation](https://firebase.google.com/docs/reference/js) or their [YouTube channel](https://www.youtube.com/user/Firebase).
