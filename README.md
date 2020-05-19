@@ -8,7 +8,7 @@
 
 # Platform for managing and reviewing Tutorials and Courses
 
-This tool is for internally reviewing and keeping track of courses that you're team is taking. The idea is that anyone can enroll in courses and review them, so others in the team can make sure they spend their time on courses that keeps a high quality.
+This tool is for internally reviewing and keeping track of courses that your team is taking. The idea is that anyone can enroll in courses and review them, so others in the team can make sure they spend their time on courses that keeps a high quality.
 
 ## Current Tech-Stack
 
